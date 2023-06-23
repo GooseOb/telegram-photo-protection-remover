@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Telegram Photo Protection Remover
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2
+// @version      1.4.3
 // @description  Removes photo protection in Telegram
 // @author       GooseOb
 // @match        https://web.telegram.org/*
@@ -12,10 +12,13 @@
 (function() {
     const v = window.location.pathname[1];
     if (v === 'k') {
-        document.addEventListener('contextmenu', e => {
+        const listener = e => {
             const img = e.target.querySelector('img');
             if (img) img.style.pointerEvents = 'auto';
-        }, {capture: true});
+        };
+        const options = {capture: true};
+        document.addEventListener('contextmenu', listener, options);
+        document.addEventListener('click', listener, options);
     } else if (v === 'z' || v === 'a') {
         const PROTECTION_CLASS = 'is-protected';
         setInterval(() => {
